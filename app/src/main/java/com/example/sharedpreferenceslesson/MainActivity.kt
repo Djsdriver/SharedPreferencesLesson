@@ -14,6 +14,8 @@ const val SWITCH_KEY = "key_for_switch_key"
 
 class MainActivity : AppCompatActivity() {
 
+    val switch=App()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,27 +26,22 @@ class MainActivity : AppCompatActivity() {
         val saveButton = findViewById<Button>(R.id.saveButton)
         val restoreButton = findViewById<Button>(R.id.restoreButton)
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
-
-        val isTurn=sharedPrefs.getBoolean(SWITCH_KEY,true)
+        val isTurn=sharedPrefs.getBoolean(SWITCH_KEY,false)
         themeSwitcher.isChecked=isTurn
-        fun switchTheme(darkThemeEnabled: Boolean) {
-            AppCompatDelegate.setDefaultNightMode(
-                if (darkThemeEnabled) {
-                    AppCompatDelegate.MODE_NIGHT_YES
-                } else {
-                    AppCompatDelegate.MODE_NIGHT_NO
-                }
-            )
-        }
+        switch.switchTheme(isTurn)
+
+
 
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
             if (checked){
                 sharedPrefs.edit().putBoolean(SWITCH_KEY,checked).apply()
-                switchTheme(checked)
+                (applicationContext as App).switchTheme(checked)
+
             }
             else{
                 sharedPrefs.edit().putBoolean(SWITCH_KEY,checked).apply()
-                switchTheme(checked)
+                (applicationContext as App).switchTheme(checked)
+
             }
         }
 
